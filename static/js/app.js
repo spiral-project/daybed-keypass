@@ -18,7 +18,6 @@ function uuid4() {
 }
 
 // Password management
-
 function reset_password() {
 	__password = '';
 }
@@ -32,7 +31,6 @@ function get_password() {
 }
 
 // LocalStorage management
-
 function get_list() {
 	l = localStorage[STORAGE_INDEX];
     if(typeof(l) == 'undefined') l = [];
@@ -80,6 +78,12 @@ function refresh_list() {
 	$('#password-list').html(service_template({keypass: get_list()}));
 }
 
+// Export / Import KeyPass
+function download_keypass(){
+	$(this).attr('href', 'data:,' + JSON.stringify(get_list()));
+	$(this).attr('download', 'keypass.json');
+	return true;
+}
 
 // Event Setup
 $(document).ready(function(){
@@ -113,5 +117,6 @@ $(document).ready(function(){
 	});
 	$('#reset_list').click(reset_list);
 	$('#reset_password').click(reset_password);
+	$('#download').click(download_keypass);
 	refresh_list();
 });
