@@ -11,7 +11,7 @@
 	<form id="keypass-form">
 	  <p><input id="service-name" placeholder="Service" autofocus /></p>
 	  <textarea id="service-password">Password</textarea>
-	  <p><input type="submit" value="Save" /> <input type="button" id="reset" value="Reset" /></p>
+	  <p><input type="submit" value="Save" /> <input type="button" id="reset_list" value="Reset list" /> <input type="button" id="reset_password" value="Reset password" /></p>
 	</form>
 	<section id="main">
 	  <ul id="password-list"></ul>
@@ -22,7 +22,7 @@
   </footer>
   <script id="service-template" type="text/x-handlebars-template">
 	{{#each keypass}}
-	<li>{{ this.name }} <button class="reveal" data-encoded="{{ this.password }}">Reveal</button></li>
+	<li>{{ this.name }} <button class="reveal" data-encoded="{{ this.password }}">Reveal</button><button class="remove" data-name="{{ this.name }}">Remove</button></li>
 	{{/each}}
   </script>
   <script src="static/js/jquery.min.js"></script>
