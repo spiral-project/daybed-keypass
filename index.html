@@ -22,7 +22,7 @@
   </footer>
   <script id="service-template" type="text/x-handlebars-template">
 	{{#each keypass}}
-	<li>{{ this.name }} <button class="reveal" data-encoded="{{ this.password }}">Reveal</button><button class="remove" data-name="{{ this.name }}">Remove</button></li>
+	<li>{{ this.name }} <button class="reveal" data-encoded="{{ this.password }}">Reveal</button><button class="remove" data-id="{{ this.id }}">Remove</button></li>
 	{{/each}}
   </script>
   <script src="static/js/jquery.min.js"></script>
