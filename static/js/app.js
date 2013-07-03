@@ -75,8 +75,17 @@ $(document).ready(function(){
 		return false;
 	});
 	$('button.reveal').live('click', function(){
-		password = get_password();
-		alert(sjcl.decrypt(password, $(this).attr('data-encoded')));
+		while(1) {
+    		password = get_password();
+    		try {
+    			alert(sjcl.decrypt(password, $(this).attr('data-encoded')));
+				break;
+            } catch (err) {
+    			alert('Wrong Password');
+    			reset_password();
+            }
+		}
+
 	});
 	$('button.remove').live('click', function(){
 		del_key_from_list($(this).attr('data-name'));
