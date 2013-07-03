@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>Daybed KeyPass</title>
+</head>
+<body>
+  <section id="password-app">
+	<h1>KeyPass</h1>
+	<form id="keypass-form">
+	  <p><input id="service-name" placeholder="Service" autofocus /></p>
+	  <textarea id="service-password">Password</textarea>
+	  <p><input type="submit" value="Save" /> <input type="button" id="reset" value="Reset" /></p>
+	</form>
+	<section id="main">
+	  <ul id="password-list"></ul>
+	</section>
+  </section>
+  <footer id="info">
+	<p>Created by <a href="http://github.com/spiral-project/daybed-keypass/">Spiral Project</a></p>
+  </footer>
+  <script id="service-template" type="text/x-handlebars-template">
+	{{#each keypass}}
+	<li>{{ this.name }} <button class="reveal" data-encoded="{{ this.password }}">Reveal</button></li>
+	{{/each}}
+  </script>
+  <script src="static/js/jquery.min.js"></script>
+  <script src="static/js/handlebars.min.js"></script>
+  <script src="static/js/json2.js"></script>
+  <script src="static/js/sjcl.js"></script>
+  <script src="static/js/app.js"></script>
+</body>
+</html>
