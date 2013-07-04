@@ -76,6 +76,7 @@ function reset_list() {
 
 function refresh_list() {
 	$('#password-list').html(service_template({keypass: get_list()}));
+	$('#keypass-link').click();
 }
 
 // Export / Import KeyPass
