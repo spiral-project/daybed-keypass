@@ -104,7 +104,7 @@ $(document).ready(function(){
 		while(1) {
     		password = get_password();
     		try {
-    			alert(sjcl.decrypt(password, $(this).attr('data-encoded')));
+    			prompt('Copy your password', sjcl.decrypt(password, $(this).attr('data-encoded')));
 				break;
             } catch (err) {
     			alert('Wrong Password');
