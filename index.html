@@ -108,7 +108,7 @@
 	  
 	  <script id="service-template" type="text/x-handlebars-template">
 		{{#each keypass}}
-		<li>{{ this.name }} <button class="reveal" data-encoded="{{ this.password }}">Reveal</button><button class="remove" data-id="{{ this.id }}">Remove</button></li>
+		<li><strong>{{ this.name }}</strong> <button class="reveal button" data-encoded="{{ this.password }}">Reveal</button><button class="remove button" data-id="{{ this.id }}">Remove</button></li>
 		{{/each}}
 	  </script>
 	  <script src="static/js/handlebars.min.js"></script>
