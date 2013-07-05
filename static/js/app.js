@@ -1,4 +1,4 @@
-var STORAGE_INDEX = "keypass";
+var STORAGE_INDEX = "collections";
 var FILE_AUTOCLOSE_TIMEOUT = 30000;  // 30 seconds
 
 var last_event = new Date().getTime();
