@@ -48,7 +48,7 @@ function autoclose_collection() {
 		close_collection();
 	} else {
 		(function (current_collection) { 
-			setTimeout(autoclose_collection, FILE_AUTOCLOSE_TIMEOUT);
+			setTimeout(autoclose_collection, 5000);
 		})(get_collection());
 	}
 }
@@ -96,7 +96,7 @@ function select_collection() {
 	$('#select-password').val('');
 
 	(function (current_collection) { 
-		setTimeout(autoclose_collection, FILE_AUTOCLOSE_TIMEOUT);
+		setTimeout(autoclose_collection, 5000);
 	})(get_collection());
 
 	refresh_list();
