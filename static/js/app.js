@@ -1,5 +1,7 @@
+var DAYBED_SERVICE = 'http://daybed.lolnet.org';
+
 var STORAGE_INDEX = "collections";
-var FILE_AUTOCLOSE_TIMEOUT = 30000;  // 30 seconds
+var FILE_AUTOCLOSE_TIMEOUT = 10000;  // 30 seconds
 
 var last_event = new Date().getTime();
 
@@ -7,6 +9,7 @@ var __password = '';
 var __current_collection = '';
 var __enter_password_callback;
 var __last_remove = '';
+var __sync_callback;
 
 var collection_template = '';
 var service_template = '';
@@ -24,6 +27,133 @@ function uuid4() {
          s4() + '-' + s4() + s4() + s4();
 }
 
+// Synchronisation management
+function sync_from_daybed() {
+	email = $('#daybed-email').val();
+	$('#daybed-email').val('');
+
+	password = $('#daybed-password').val();
+	$('#daybed-password').val('');
+
+	if(email.indexOf('@') == -1 || email.indexOf('.') == -1) {
+		alert('Wrong email adress');
+		refresh_list();
+		return false;
+	}
+
+	passphrase = sjcl.encrypt(password, email);
+	daybed_id = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(JSON.stringify(passphrase)));
+
+	// Get collections from daybed
+	$.get(DAYBED_SERVICE + '/data/keypass_' + daybed_id, function(data) {
+		collections = {};
+		for(var key in data.data){
+			collections[data.data[key]['uuid']] = data.data[key];
+		}
+		set_collections(collections);
+	}).fail(function(){ 
+		set_collections({});
+	});
+}
+
+function push_to_daybed(url) {
+	collections = get_collections();
+	for(var key in collections) {
+		var data = collections[key];
+		$.ajax({
+			type: 'POST', 
+			url: url+'/'+data.uuid, 
+			contentType: "application/json",
+			data: JSON.stringify(data)})
+			.done(function() {
+				console.log('Pushed succeed for '+data.name);
+			}).fail(function() {
+				alert('Push failed on '+data.name)
+			});
+	}
+}
+
+function remove_from_daybed(url) {
+	// All the collections that are on daybed but no more on
+	// localStorage must die
+	var local_storage_ids = [];
+	collections = get_collections();
+	for(var key in collections) {
+		local_storage_ids.push(key);
+	}
+	// Get the collections list
+	$.get(url, function(data) {
+		var to_remove_from_daybed = []
+		for(var key in data.data){
+			uuid = data.data[key]['uuid'];
+			if(local_storage_ids.indexOf(uuid) == -1) {
+				$.ajax({
+					type: 'DELETE',
+					url: url+'/'+uuid})
+					.done(function() {
+						console.log('Deleted ' + uuid);
+					}).fail(function() {
+						alert('Fail to delete '+uuid)
+					});
+			}
+		}
+	});	
+}
+
+function sync_to_daybed() {
+	var email = $('#daybed-email').val();
+	$('#daybed-email').val('');
+
+	var password = $('#daybed-password').val();
+	$('#daybed-password').val('');
+
+	if(email.indexOf('@') == -1 || email.indexOf('.') == -1) {
+		alert('Wrong email adress');
+		refresh_list();
+		return false;
+	}
+
+	passphrase = sjcl.encrypt(password, email);
+	var daybed_id = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(JSON.stringify(passphrase)));
+
+	// Check if the definition already exists	
+	$.get(DAYBED_SERVICE + '/definition/keypass_' + daybed_id)
+		.done(function(data) {
+			// If yes, post all the collections to daybed
+			remove_from_daybed(DAYBED_SERVICE + '/data/keypass_' + daybed_id);
+			push_to_daybed(DAYBED_SERVICE + '/data/keypass_' + daybed_id);
+		}).fail(function(){
+			// We need to create the model first
+			definition = {title: "Daybed-Keypass",
+						  description: "User account synchronization keypass",
+						  fields: [{name: 'uuid',
+									type: 'string',
+									description: 'uuid of the collection'},
+								   {name: 'name',
+									type: 'string',
+									description: 'name of the collection'},
+								   {name: 'passwords',
+									type: 'string',
+									description: 'AES password list encryption'}]};
+			$.ajax({
+				type: 'PUT',
+				url: DAYBED_SERVICE + '/definition/keypass_' + daybed_id,
+				contentType: "application/json",
+				data: JSON.stringify(definition)})
+				.fail(function() {
+					// Error during the definition creation
+					alert('Fail to create daybed definition for your account.');
+				}).done(function() {
+					// If we succeed, we have to post all collections to daybed
+					remove_from_daybed(DAYBED_SERVICE + '/data/keypass_' + daybed_id);
+					push_to_daybed(DAYBED_SERVICE + '/data/keypass_' + daybed_id);
+				});
+			});
+}
+
+function compare_array(arr1, arr2) {
+	return $(arr1).not(arr2).length == 0 && $(arr2).not(arr1).length == 0
+}
 
 // Password management
 function reset_password() {
@@ -39,6 +169,7 @@ function get_password() {
 
 // Collection management
 function close_collection() {
+	__last_remove = '';
 	__current_collection = '';
 	__password = '';
 	refresh_list();
@@ -267,9 +398,48 @@ $(document).ready(function(){
 		return false;
 	});
 	$('#dialog-create-collection form').live('submit', function(){
-		console.log('Toto');
 		create_collection();
 		$('#dialog-create-collection').dialog("close");
+		return false;
+	});
+
+	$('#daybed-sync-from').live('click', function() {
+		__sync_callback = sync_from_daybed;
+		$('#dialog-daybed-sync').dialog({
+			width: 600,
+			buttons: {
+				Cancel: function() {
+					$(this).find('form input').each(function(){$(this).val('');});
+					$(this).dialog("close");
+				},
+				Ok: function () {
+					__sync_callback();
+					$(this).dialog("close");
+				}
+			}
+		});
+		return false;
+	});
+	$('#daybed-sync-to').live('click', function() {
+		__sync_callback = sync_to_daybed;
+		$('#dialog-daybed-sync').dialog({
+			width: 600,
+			buttons: {
+				Cancel: function() {
+					$(this).find('form input').each(function(){$(this).val('');});
+					$(this).dialog("close");
+				},
+				Ok: function () {
+					__sync_callback();
+					$(this).dialog("close");
+				}
+			}
+		});
+		return false;
+	});
+	$('#dialog-daybed-sync form').live('submit', function(){
+		__sync_callback();
+		$('#dialog-daybed-sync').dialog("close");
 		return false;
 	});
 

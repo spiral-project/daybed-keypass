@@ -109,6 +109,18 @@
 		  </fieldset>
 		</form>
 	  </div>
+
+	  <div id="dialog-daybed-sync" title="Sync on Daybed" style="display: none;">
+		<form method="post" action="#">
+		  <fieldset>
+			<label form="daybed-email">Email</label>
+			<input type="text" id="daybed-email" class="text ui-widget-content ui-corner-all"/>
+			<label for="daybed-password">Password</label>
+			<input type="password" id="daybed-password" class="text ui-widget-content ui-corner-all"/>
+			<input type="submit" style="position: absolute; top: -200px; left: -200px;"/>
+		  </fieldset>
+		</form>
+	  </div>
 	  
 	  <script id="collection-template" type="text/x-handlebars-template">
 		<header>
@@ -128,6 +140,8 @@
 		<div style="margin: 30px 0;">
 		  <div class="row half">
 			<div class="4u"><button class="button" id="create-link">Create a collection</button></div>
+			<div class="4u"><button class="button" id="daybed-sync-from">Sync from daybed</button></div>
+			<div class="4u"><button class="button" id="daybed-sync-to">Sync to daybed</button></div>
 		  </div>
 		</div>
 	  </script>
