@@ -125,15 +125,15 @@ function sync_to_daybed() {
     			push_to_daybed(DAYBED_SERVICE + '/data/keypass_' + daybed_id);
     		}).fail(function(){
     			// We need to create the model first
-				create_daybed_model_and_sync();
+				create_daybed_model_and_sync(DAYBED_SERVICE + '/definition/keypass_' + daybed_id);
     		});
 	} catch (err) {
 		console.log('It could be a CORS problem on 404.');
-		create_daybed_model_and_sync();
+		create_daybed_model_and_sync(DAYBED_SERVICE + '/definition/keypass_' + daybed_id);
 	}
 }
 
-function create_daybed_model_and_sync() {
+function create_daybed_model_and_sync(url) {
 	definition = {title: "Daybed-Keypass",
 				  description: "User account synchronization keypass",
 				  fields: [{name: 'uuid',
@@ -147,7 +147,7 @@ function create_daybed_model_and_sync() {
 							description: 'AES password list encryption'}]};
 	$.ajax({
 		type: 'PUT',
-		url: DAYBED_SERVICE + '/definition/keypass_' + daybed_id,
+		url: url,
 		contentType: "application/json",
 		data: JSON.stringify(definition)})
 		.fail(function() {
@@ -155,8 +155,9 @@ function create_daybed_model_and_sync() {
 			alert('Fail to create daybed definition for your account.');
 		}).done(function() {
 			// If we succeed, we have to post all collections to daybed
-			remove_from_daybed(DAYBED_SERVICE + '/data/keypass_' + daybed_id);
-			push_to_daybed(DAYBED_SERVICE + '/data/keypass_' + daybed_id);
+			data_url = url.replace('definition', 'data');
+			remove_from_daybed(data_url);
+			push_to_daybed(data_url);
 		});
 }
 
