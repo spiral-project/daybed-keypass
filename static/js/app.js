@@ -5,7 +5,10 @@ var last_event = new Date().getTime();
 
 var __password = '';
 var __current_collection = '';
+var __enter_password_callback;
+var __last_remove = '';
 
+var collection_template = '';
 var service_template = '';
 
 
@@ -29,7 +32,7 @@ function reset_password() {
 
 function get_password() {
 	if(__password == ''){
-		reset_list();
+		close_collection();
 	}
 	return __password;
 }
@@ -38,7 +41,7 @@ function get_password() {
 function close_collection() {
 	__current_collection = '';
 	__password = '';
-	reset_list();
+	refresh_list();
 }
 
 function autoclose_collection() {
@@ -55,7 +58,7 @@ function autoclose_collection() {
 
 function get_current_collection() {
 	if(__current_collection == ''){
-		reset_list();
+		refresh_list();
 	} else {
 		return __current_collection;
 	}
@@ -89,9 +92,6 @@ function update_collection_list() {
 }
 
 function select_collection() {
-	__current_collection = $('#select-collection').val();
-	$('#select-collection').val('');
-
 	__password = $('#select-password').val();
 	$('#select-password').val('');
 
@@ -125,15 +125,32 @@ function get_collections() {
    return l;
 }
 
+function get_collection_list() {
+	collections = get_collections();
+	collection_list = [];
+	for (var key in collections) {
+		collection_list.push(collections[key]);
+	}
+	return collection_list;
+}
+
 function set_collections(c) {
 	last_event = new Date().getTime();
 	localStorage[STORAGE_INDEX] = JSON.stringify(c);
 }
 
 function remove_collection() {
+	__password = $('#select-password').val();
+	$('#select-password').val('');
+
 	current_collection = get_current_collection();
 	c = get_collections();
-	delete c[current_collection];
+    try {
+		sjcl.decrypt(__password, c[current_collection]['passwords']);
+		delete c[current_collection];
+	} catch (err) {
+		alert('Wrong password');
+	}
 	set_collections(c);
 	close_collection();
 }
@@ -141,7 +158,7 @@ function remove_collection() {
 function get_collection() {
 	current_collection = get_current_collection();
 	c = get_collections();
-	l = c[current_collection]
+	l = c[current_collection];
     if(typeof(l) == 'undefined') $('#keypass-link').click();
    return l;
 }
@@ -191,6 +208,7 @@ function del_key_from_list(id) {
 	l = get_list();
 	for(var x in l) {
 		if(l[x]['id'] == id) {
+			__last_remove = l[x];
 			l.splice(x, 1);
 			set_list(l);
 			refresh_list();
@@ -199,21 +217,29 @@ function del_key_from_list(id) {
 	}
 }
 
-function refresh_list() {
-	$('#password-list').html(service_template({keypass: get_list(), name: get_collection()['name']}));
-	$('#keypass-link').click();
-	$(window).resize();
+function undo_del_key_from_list() {
+	if (__last_remove != '') {
+		l = get_list();
+		l.push(__last_remove);
+		__last_remove = '';
+		set_list(l);
+		refresh_list();
+	}
 }
 
-function reset_list() {
-	$('#password-list').html('');
+function refresh_list() {
+	if(__current_collection == '') {
+		$('#work').html(collection_template({collections: get_collection_list()}));
+	} else {
+		$('#work').html(service_template({passwords: get_list(), name: get_collection()['name'], undo: __last_remove != ''}));
+	}
 	$('#keypass-link').click();
 	$(window).resize();
 }
 
 // Export / Import KeyPass
 function download_keypass(){
-	$(this).attr('href', 'data:,' + JSON.stringify(get_collections()));
+	$(this).attr('href', 'data:,' + JSON.stringify(get_collection()));
 	$(this).attr('download', 'keypass.json');
 	return true;
 }
@@ -221,13 +247,15 @@ function download_keypass(){
 // Event Setup
 $(document).ready(function(){
 	service_template = Handlebars.compile($('#service-template').html());
+	collection_template = Handlebars.compile($('#collection-template').html());
 
 	// Setup dialog modal
-	$('#create-link').click(function() {
+	$('#create-link').live('click', function() {
 		$('#dialog-create-collection').dialog({
 			width: 500,
 			buttons: {
 				Cancel: function() {
+					$(this).find('form input').each(function(){$(this).val('');});
 					$(this).dialog("close");
 				},
 				"Create a collection": function () {
@@ -238,35 +266,60 @@ $(document).ready(function(){
 		});
 		return false;
 	});
-	$('#dialog-create-collection form').submit(function(){
+	$('#dialog-create-collection form').live('submit', function(){
+		console.log('Toto');
 		create_collection();
 		$('#dialog-create-collection').dialog("close");
 		return false;
 	});
 
-	$('#select-link').click(function() {
-		update_collection_list();
-		$('#dialog-select-collection').dialog({
+	$('#collection-close').live('click', function() {
+		close_collection();
+	});
+
+	$('#collection-open').live('click', function() {
+		__current_collection = $(this).attr('data-id');
+		__enter_password_callback = select_collection;
+		$('#dialog-enter-password').dialog({
 			width: 600,
 			buttons: {
 				Cancel: function() {
+					__current_collection = '';
+					$(this).find('form input').each(function(){$(this).val('');});
 					$(this).dialog("close");
 				},
-				"Select collection": function () {
+				Ok: function () {
 					select_collection();
 					$(this).dialog("close");
-				},
-				"Create one": function () {
-					$(this).dialog("close");
-					$('#create-link').click();
 				}
 			}
 		});
 		return false;
 	});
-	$('#dialog-select-collection form').submit(function(){
-		select_collection();
-		$('#dialog-select-collection').dialog("close");
+
+	$('#collection-delete').live('click', function() {
+		__current_collection = $(this).attr('data-id');
+		__enter_password_callback = remove_collection;
+		$('#dialog-enter-password').dialog({
+			width: 600,
+			buttons: {
+				Cancel: function() {
+					__current_collection = '';
+					$(this).find('form input').each(function(){$(this).val('');});
+					$(this).dialog("close");
+				},
+				Ok: function () {
+					remove_collection();
+					$(this).dialog("close");
+				}
+			}
+		});
+		return false;
+	});
+
+	$('#dialog-enter-password form').live('submit', function(){
+		__enter_password_callback();
+		$('#dialog-enter-password').dialog("close");
 		return false;
 	});
 
@@ -276,6 +329,8 @@ $(document).ready(function(){
 			width: 600,
 			buttons: {
 				Cancel: function() {
+					$(this).find('form input').each(function(){$(this).val('');});
+					$(this).find('form textarea').each(function(){$(this).val('');});
 					$(this).dialog("close");
 				},
 				"Add password": function () {
@@ -287,9 +342,9 @@ $(document).ready(function(){
 		});
 		return false;
 	});
-	$('#dialog-add-password form').submit(function(){
-		select_collection();
-		$('#dialog-select-collection').dialog("close");
+	$('#dialog-add-password form').live('submit', function(event){
+		add_password(event);
+		$('#dialog-add-password').dialog("close");
 		return false;
 	});
 	
@@ -301,6 +356,7 @@ $(document).ready(function(){
 			width: 600,
 			buttons: {
 				Ok: function() {
+					$(this).find('textarea').each(function(){ $(this).val(''); });
 					$(this).dialog("close");
 				}
 			}
@@ -310,6 +366,6 @@ $(document).ready(function(){
 		del_key_from_list($(this).attr('data-id'));
 	});
 	$('#download').live('click', download_keypass);
-	$('#delete').live('click', remove_collection);
-	
+	$('#undo').live('click', undo_del_key_from_list);
+	refresh_list();
 });

@@ -299,6 +299,7 @@
 		-o-transition: background-color .25s ease-in-out;
 		-ms-transition: background-color .25s ease-in-out;
 		transition: background-color .25s ease-in-out;
+		padding: 0;
 	}
 
 		.button:hover
@@ -877,3 +878,11 @@
 		{
 			color: rgba(255,255,255,1.0);
 		}
+
+
+a.button {
+	font-size: 13px;
+	font-family: Arial;
+	padding: 0 20px;
+	text-decoration: none;
+}

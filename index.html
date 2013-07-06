@@ -51,22 +51,8 @@
 
 		  <!-- KeyPass --> 
 		  <article id="work" class="panel">
-			<header>
-			  <h2>Choose a collection</h2>
-			</header>
-			<p>Daybed Password let you store AES encrypted password in collections secured with a master password. Choose or create a collection below.</p>
-
-
-			<div>
-			  <div class="row half">
-				<div class="6u"><a href="#" id="create-link" class="icon icon-plus active">&nbsp; Create a collection</a></div>
-				<div class="6u"><a href="#" id="select-link" class="icon icon-file active">&nbsp; Select a collection</a></div>
-			  </div>
-			</div>
-			<section class="is-gallery" id="password-list">
-			  <!-- Here comes the decoded passwords -->
-			</section>
-		  </article>		  
+			  <!-- Here comes the generated content collection list of password list -->
+		  </article>
 		</div>
 		
 		<!-- Footer -->
@@ -86,20 +72,18 @@
 			<label for="name">Name</label>
 			<input type="text" id="name" class="text ui-widget-content ui-corner-all" />
 			<label for="password">Master Password</label>
-			<input type="password" id="password" value="" class="text ui-widget-content ui-corner-all" />
+			<input type="password" id="password" class="text ui-widget-content ui-corner-all" />
+			<input type="submit" style="position: absolute; top: -200px; left: -200px;"/>
 		  </fieldset>
 		</form>
 	  </div>
 
-	  <div id="dialog-select-collection" title="Select a collection" style="display: none;">
+	  <div id="dialog-enter-password" title="Enter the collection master password" style="display: none;">
 		<form method="post" action="#">
 		  <fieldset>
-			<label for="name">Name</label>
-			<select name="name" id="select-collection" class="text ui-widget-content ui-corner-all">
-			</select>
-
 			<label for="password">Master Password</label>
 			<input type="password" name="password" id="select-password" value="" class="text ui-widget-content ui-corner-all" />
+			<input type="submit" style="position: absolute; top: -200px; left: -200px;"/>
 		  </fieldset>
 		</form>
 	  </div>
@@ -121,15 +105,43 @@
 		  <fieldset>
 			<label for="show-password">Service Password</label>
 			<textarea id="show-password" class="text ui-widget-content ui-corner-all"></textarea>
+			<input type="submit" style="position: absolute; top: -200px; left: -200px;"/>
 		  </fieldset>
 		</form>
 	  </div>
 	  
-	  <script id="service-template" type="text/x-handlebars-template">
-		<h2 style="margin: 30px 0;">{{ name }}</h2>
+	  <script id="collection-template" type="text/x-handlebars-template">
+		<header>
+		  <h2>Choose a collection</h2>
+		</header>
+		<p>Daybed Password let you store AES encrypted password in collections secured with a master password. Choose or create a collection below.</p>
 		
 		<div>
-		  {{#each keypass}}
+		  {{#each collections}}
+		  <div class="row half">
+			<div class="4u"><strong>{{ this.name }}</strong></div>
+			<div class="4u"><button id="collection-open" class="button" data-id="{{ this.uuid }}">Open</button></div>
+			<div class="4u"><button id="collection-delete" class="button" data-id="{{ this.uuid }}">Remove</button></div>
+		  </div>
+		  {{/each}}
+		</div>
+		<div style="margin: 30px 0;">
+		  <div class="row half">
+			<div class="4u"><button class="button" id="create-link">Create a collection</button></div>
+		  </div>
+		</div>
+	  </script>
+
+	  <script id="service-template" type="text/x-handlebars-template">
+		<header>
+		  <h2>{{ name }}</h2>
+		</header>
+		
+		<div>
+		  {{#if undo}}
+		  <button id="undo" class="button">Undo last remove</button>
+		  {{/if}}
+		  {{#each passwords}}
 		  <div class="row half">
 			<div class="4u"><strong>{{ this.name }}</strong></div>
 			<div class="4u"><button class="reveal button" data-encoded="{{ this.password }}">Reveal</button></div>
@@ -140,8 +152,8 @@
 		<div style="margin: 30px 0;">
 		  <div class="row half">
 			<div class="4u"><button class="button" id="add-password-link">Add a password</button></div>
-			<div class="4u"><button class="button" id="download">Download KeyPass File</button></div>
-			<div class="4u"><button class="button" id="delete">Remove collection</button></div>
+			<div class="4u"><a href="#" class="button" id="download">Download KeyPass File</a></div>
+			<div class="4u"><button class="button" id="collection-close">Close collection</button></div>
 		  </div>
 		</div>
 	  </script>
