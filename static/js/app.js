@@ -1,4 +1,5 @@
-var DAYBED_SERVICE = 'http://daybed.lolnet.org';
+//var DAYBED_SERVICE = 'http://localhost/daybed';
+var DAYBED_SERVICE = 'http://127.0.0.1/daybed';
 
 var STORAGE_INDEX = "collections";
 var FILE_AUTOCLOSE_TIMEOUT = 10000;  // 30 seconds
@@ -61,7 +62,7 @@ function push_to_daybed(url) {
 	for(var key in collections) {
 		var data = collections[key];
 		$.ajax({
-			type: 'POST', 
+			type: 'PUT', 
 			url: url+'/'+data.uuid, 
 			contentType: "application/json",
 			data: JSON.stringify(data)})
@@ -118,18 +119,18 @@ function sync_to_daybed() {
 
 	// Check if the definition already exists
 	try {
-    	$.get(DAYBED_SERVICE + '/definition/keypass_' + daybed_id)
+    	$.get(DAYBED_SERVICE + '/definitions/keypass_' + daybed_id)
     		.done(function(data) {
     			// If yes, post all the collections to daybed
     			remove_from_daybed(DAYBED_SERVICE + '/data/keypass_' + daybed_id);
     			push_to_daybed(DAYBED_SERVICE + '/data/keypass_' + daybed_id);
     		}).fail(function(){
     			// We need to create the model first
-				create_daybed_model_and_sync(DAYBED_SERVICE + '/definition/keypass_' + daybed_id);
+				create_daybed_model_and_sync(DAYBED_SERVICE + '/definitions/keypass_' + daybed_id);
     		});
 	} catch (err) {
 		console.log('It could be a CORS problem on 404.');
-		create_daybed_model_and_sync(DAYBED_SERVICE + '/definition/keypass_' + daybed_id);
+		create_daybed_model_and_sync(DAYBED_SERVICE + '/definitions/keypass_' + daybed_id);
 	}
 }
 
