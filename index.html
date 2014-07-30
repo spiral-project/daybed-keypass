@@ -1,179 +1,180 @@
 <!DOCTYPE HTML>
 <!--
-	Astral 2.1 by HTML5 UP
-	html5up.net | @n33co
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+    Astral 2.1 by HTML5 UP
+    html5up.net | @n33co
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
-	<head>
-		<title>Daybed Keypass</title>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta name="description" content="Store your password list securely." />
-		<meta name="keywords" content="" />
-		<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400" rel="stylesheet" />
-		<link href="static/ui-lightness/jquery-ui-1.10.3.custom.css" rel="stylesheet">
-		<script src="static/js/jquery.min.js"></script>
-		<script src="static/js/jquery-ui-1.10.3.dialog.min.js"></script>
-		<script src="static/astral/js/config.js"></script>
-		<script src="static/astral/js/skel.min.js"></script>
-		<noscript>
-			<link rel="stylesheet" href="static/astral/css/skel-noscript.css" />
-			<link rel="stylesheet" href="static/astral/css/style.css" />
-			<link rel="stylesheet" href="static/astral/css/style-desktop.css" />
-			<link rel="stylesheet" href="static/astral/css/noscript.css" />
-		</noscript>
-		<!--[if lte IE 8]><script src="static/astral/js/html5shiv.js"></script><link rel="stylesheet" href="static/astral/css/ie8.css" /><![endif]-->
-	</head>
-	<body class="homepage">
-	  <!-- Wrapper-->
-	  <div id="wrapper">
-		
-		<!-- Nav -->
-		<nav id="nav">
-		  <a href="#me" class="icon icon-home active"><span>Home</span></a>
-		  <a href="#work" id="keypass-link" class="icon icon-lock"><span>KeyPass</span></a>
-		  <a href="https://github.com/spiral-project/daybed-keypass" class="icon icon-github"><span>Github</span></a>
-		</nav>
-		
-		<!-- Main -->
-		<div id="main">
-		  
-		  <!-- Me -->
-		  <article id="me" class="panel">
-			<header>
-			  <h1>Daybed Password</h1>
-			  <span class="byline" style="display: block; margin-left: 70px;">Store collections of AES<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; encrypted password.</span>
-			</header>
-			<a href="#work" class="jumplink pic">
-			  <img src="static/astral/images/me.jpg" alt="" />
-			</a>
-		  </article>
+    <head>
+        <title>Daybed Keypass</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="description" content="Store your password list securely." />
+        <meta name="keywords" content="" />
+        <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400" rel="stylesheet" />
+        <link href="static/ui-lightness/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+        <script src="static/js/jquery.min.js"></script>
+        <script src="static/js/jquery-ui-1.10.3.dialog.min.js"></script>
+        <script src="static/astral/js/config.js"></script>
+        <script src="static/astral/js/skel.min.js"></script>
+        <noscript>
+            <link rel="stylesheet" href="static/astral/css/skel-noscript.css" />
+            <link rel="stylesheet" href="static/astral/css/style.css" />
+            <link rel="stylesheet" href="static/astral/css/style-desktop.css" />
+            <link rel="stylesheet" href="static/astral/css/noscript.css" />
+        </noscript>
+        <!--[if lte IE 8]><script src="static/astral/js/html5shiv.js"></script><link rel="stylesheet" href="static/astral/css/ie8.css" /><![endif]-->
+    </head>
+    <body class="homepage">
+      <!-- Wrapper-->
+      <div id="wrapper">
 
-		  <!-- KeyPass --> 
-		  <article id="work" class="panel">
-			  <!-- Here comes the generated content collection list of password list -->
-		  </article>
-		</div>
-		
-		<!-- Footer -->
-		<div id="footer">
-		  <ul class="links">
-			<li>&copy; Spiral Project</li>
-			<li><a href="https://github.com/spiral-project/daybed-keypass/">Daybed Keypass</a></li>
-			<li>Design : <a href="http://html5up.net/">HTML5 UP</a></li>
-		  </ul>
-		</div>
-	
-	  </div>
+        <!-- Nav -->
+        <nav id="nav">
+          <a href="#me" class="icon icon-home active"><span>Home</span></a>
+          <a href="#work" id="keypass-link" class="icon icon-lock"><span>KeyPass</span></a>
+          <a href="https://github.com/spiral-project/daybed-keypass" class="icon icon-github"><span>Github</span></a>
+        </nav>
 
-	  <div id="dialog-create-collection" title="Create a new collection" style="display: none;">
-		<form method="post" action="#">
-		  <fieldset>
-			<label for="name">Name</label>
-			<input type="text" id="name" class="text ui-widget-content ui-corner-all" />
-			<label for="password">Master Password</label>
-			<input type="password" id="password" class="text ui-widget-content ui-corner-all" />
-			<input type="submit" style="position: absolute; top: -200px; left: -200px;"/>
-		  </fieldset>
-		</form>
-	  </div>
+        <!-- Main -->
+        <div id="main">
 
-	  <div id="dialog-enter-password" title="Enter the collection master password" style="display: none;">
-		<form method="post" action="#">
-		  <fieldset>
-			<label for="password">Master Password</label>
-			<input type="password" name="password" id="select-password" value="" class="text ui-widget-content ui-corner-all" />
-			<input type="submit" style="position: absolute; top: -200px; left: -200px;"/>
-		  </fieldset>
-		</form>
-	  </div>
+          <!-- Me -->
+          <article id="me" class="panel">
+            <header>
+              <h1>Daybed Password</h1>
+              <span class="byline" style="display: block; margin-left: 70px;">Store collections of AES<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; encrypted password.</span>
+            </header>
+            <a href="#work" class="jumplink pic">
+              <img src="static/astral/images/me.jpg" alt="" />
+            </a>
+          </article>
 
-	  <div id="dialog-add-password" title="Add a password" style="display: none;">
-		<form method="post" action="#">
-		  <fieldset>
-			<label for="name">Service Name</label>
-			<input type="text" id="service-name" class="text ui-widget-content ui-corner-all" />
+          <!-- KeyPass -->
+          <article id="work" class="panel">
+              <!-- Here comes the generated content collection list of password list -->
+          </article>
+        </div>
 
-			<label for="service-password">Service Password</label>
-			<textarea id="service-password" class="text ui-widget-content ui-corner-all"></textarea>
-		  </fieldset>
-		</form>
-	  </div>
+        <!-- Footer -->
+        <div id="footer">
+          <ul class="links">
+            <li>&copy; Spiral Project</li>
+            <li><a href="https://github.com/spiral-project/daybed-keypass/">Daybed Keypass</a></li>
+            <li>Design : <a href="http://html5up.net/">HTML5 UP</a></li>
+          </ul>
+        </div>
+      </div>
 
-	  <div id="dialog-show-password" title="Reveal password" style="display: none;">
-		<form method="post" action="#">
-		  <fieldset>
-			<label for="show-password">Service Password</label>
-			<textarea id="show-password" class="text ui-widget-content ui-corner-all"></textarea>
-			<input type="submit" style="position: absolute; top: -200px; left: -200px;"/>
-		  </fieldset>
-		</form>
-	  </div>
+      <div id="dialog-create-collection" title="Create a new collection" style="display: none;">
+        <form method="post" action="#">
+          <fieldset>
+            <label for="name">Name</label>
+            <input type="text" id="name" class="text ui-widget-content ui-corner-all" />
+            <label for="password">Master Password</label>
+            <input type="password" id="password" class="text ui-widget-content ui-corner-all" />
+            <input type="submit" style="position: absolute; top: -200px; left: -200px;"/>
+          </fieldset>
+        </form>
+      </div>
 
-	  <div id="dialog-daybed-sync" title="Sync on Daybed" style="display: none;">
-		<form method="post" action="#">
-		  <fieldset>
-			<label form="daybed-email">Email</label>
-			<input type="text" id="daybed-email" class="text ui-widget-content ui-corner-all"/>
-			<label for="daybed-password">Password</label>
-			<input type="password" id="daybed-password" class="text ui-widget-content ui-corner-all"/>
-			<input type="submit" style="position: absolute; top: -200px; left: -200px;"/>
-		  </fieldset>
-		</form>
-	  </div>
-	  
-	  <script id="collection-template" type="text/x-handlebars-template">
-		<header>
-		  <h2>Choose a collection</h2>
-		</header>
-		<p>Daybed Password let you store AES encrypted password in collections secured with a master password. Choose or create a collection below.</p>
-		
-		<div>
-		  {{#each collections}}
-		  <div class="row half">
-			<div class="4u"><strong>{{ this.name }}</strong></div>
-			<div class="4u"><button id="collection-open" class="button" data-id="{{ this.uuid }}">Open</button></div>
-			<div class="4u"><button id="collection-delete" class="button" data-id="{{ this.uuid }}">Remove</button></div>
-		  </div>
-		  {{/each}}
-		</div>
-		<div style="margin: 30px 0;">
-		  <div class="row half">
-			<div class="4u"><button class="button" id="create-link">Create a collection</button></div>
-			<div class="4u"><button class="button" id="daybed-sync-from">Sync from daybed</button></div>
-			<div class="4u"><button class="button" id="daybed-sync-to">Sync to daybed</button></div>
-		  </div>
-		</div>
-	  </script>
+      <div id="dialog-enter-password" title="Enter the collection master password" style="display: none;">
+        <form method="post" action="#">
+          <fieldset>
+            <label for="password">Master Password</label>
+            <input type="password" name="password" id="select-password" value="" class="text ui-widget-content ui-corner-all" />
+            <input type="submit" style="position: absolute; top: -200px; left: -200px;"/>
+          </fieldset>
+        </form>
+      </div>
 
-	  <script id="service-template" type="text/x-handlebars-template">
-		<header>
-		  <h2>{{ name }}</h2>
-		</header>
-		
-		<div>
-		  {{#if undo}}
-		  <button id="undo" class="button">Undo last remove</button>
-		  {{/if}}
-		  {{#each passwords}}
-		  <div class="row half">
-			<div class="4u"><strong>{{ this.name }}</strong></div>
-			<div class="4u"><button class="reveal button" data-encoded="{{ this.password }}">Reveal</button></div>
-			<div class="4u"><button class="remove button" data-id="{{ this.id }}">Remove</button></div>
-		  </div>
-		  {{/each}}
-		</div>
-		<div style="margin: 30px 0;">
-		  <div class="row half">
-			<div class="4u"><button class="button" id="add-password-link">Add a password</button></div>
-			<div class="4u"><a href="#" class="button" id="download">Download KeyPass File</a></div>
-			<div class="4u"><button class="button" id="collection-close">Close collection</button></div>
-		  </div>
-		</div>
-	  </script>
-	  <script src="static/js/handlebars.min.js"></script>
-	  <script src="static/js/json2.js"></script>
-	  <script src="static/js/sjcl.js"></script>
-	  <script src="static/js/app.js"></script>
-	</body>
+      <div id="dialog-add-password" title="Add a password" style="display: none;">
+        <form method="post" action="#">
+          <fieldset>
+            <label for="name">Service Name</label>
+            <input type="text" id="service-name" class="text ui-widget-content ui-corner-all" />
+
+            <label for="service-password">Service Password</label>
+            <textarea id="service-password" class="text ui-widget-content ui-corner-all"></textarea>
+          </fieldset>
+        </form>
+      </div>
+
+      <div id="dialog-show-password" title="Reveal password" style="display: none;">
+        <form method="post" action="#">
+          <fieldset>
+            <label for="show-password">Service Password</label>
+            <textarea id="show-password" class="text ui-widget-content ui-corner-all"></textarea>
+            <input type="submit" style="position: absolute; top: -200px; left: -200px;"/>
+          </fieldset>
+        </form>
+      </div>
+
+      <div id="dialog-daybed-sync" title="Sync on Daybed" style="display: none;">
+        <form method="post" action="#">
+          <fieldset>
+            <label form="daybed-email">Email</label>
+            <input type="text" id="daybed-email" class="text ui-widget-content ui-corner-all"/>
+            <label for="daybed-password">Password</label>
+            <input type="password" id="daybed-password" class="text ui-widget-content ui-corner-all"/>
+            <input type="submit" style="position: absolute; top: -200px; left: -200px;"/>
+          </fieldset>
+        </form>
+      </div>
+
+      <script id="collection-template" type="text/x-handlebars-template">
+        <header>
+          <h2>Choose a collection</h2>
+        </header>
+        <p>Daybed Password let you store AES encrypted password in collections secured with a master password. Choose or create a collection below.</p>
+
+        <div>
+          {{#each collections}}
+          <div class="row half">
+            <div class="4u"><strong>{{ this.name }}</strong></div>
+            <div class="4u"><button id="collection-open" class="button" data-id="{{ this.uuid }}">Open</button></div>
+            <div class="4u"><button id="collection-delete" class="button" data-id="{{ this.uuid }}">Remove</button></div>
+          </div>
+          {{/each}}
+        </div>
+        <div style="margin: 30px 0;">
+          <div class="row half">
+            <div class="4u"><button class="button" id="create-link">Create a collection</button></div>
+            <div class="4u"><button class="button" id="daybed-sync-from">Sync from daybed</button></div>
+            <div class="4u"><button class="button" id="daybed-sync-to">Sync to daybed</button></div>
+          </div>
+        </div>
+      </script>
+
+      <script id="service-template" type="text/x-handlebars-template">
+        <header>
+          <h2>{{ name }}</h2>
+        </header>
+
+        <div>
+          {{#if undo}}
+          <button id="undo" class="button">Undo last remove</button>
+          {{/if}}
+          {{#each passwords}}
+          <div class="row half">
+            <div class="4u"><strong>{{ this.name }}</strong></div>
+            <div class="4u"><button class="reveal button" data-encoded="{{ this.password }}">Reveal</button></div>
+            <div class="4u"><button class="remove button" data-id="{{ this.id }}">Remove</button></div>
+          </div>
+          {{/each}}
+        </div>
+        <div style="margin: 30px 0;">
+          <div class="row half">
+            <div class="4u"><button class="button" id="add-password-link">Add a password</button></div>
+            <div class="4u"><a href="#" class="button" id="download">Download KeyPass File</a></div>
+            <div class="4u"><button class="button" id="collection-close">Close collection</button></div>
+          </div>
+        </div>
+      </script>
+      <script src="static/js/handlebars.min.js"></script>
+      <script src="static/js/json2.js"></script>
+      <script src="static/js/sjcl.js"></script>
+      <script src="static/js/hawk.js"></script>
+      <script src="static/js/token.js"></script>
+      <script src="static/js/app.js"></script>
+    </body>
 </html>
